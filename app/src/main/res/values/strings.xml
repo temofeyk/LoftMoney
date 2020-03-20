@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">LoftMoney</string>
+    <string name="app_name" translatable="false">LoftMoney</string>
+    <string name="hello_title">Hello World!</string>
 </resources>
