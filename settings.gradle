@@ -1,0 +1,2 @@
+rootProject.name='LoftMoney'
+include ':app'
