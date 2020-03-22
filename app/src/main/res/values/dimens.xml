@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!--    Add item activity-->
+    <dimen name="add_item_margin_bottom">61dp</dimen>
+    <dimen name="add_item_padding_start">33dp</dimen>
+    <dimen name="add_item_padding_end">104dp</dimen>
+</resources>

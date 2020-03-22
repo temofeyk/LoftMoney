@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    Add item activity-->
+    <string name="btnAddItemAddTitle">Добавить</string>
+    <string name="etAddItemNameHint">Название</string>
+    <string name="etAddItemPriceHint">Цена</string>
+</resources>
