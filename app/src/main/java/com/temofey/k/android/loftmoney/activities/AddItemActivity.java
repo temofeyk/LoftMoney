@@ -29,19 +29,16 @@ public class AddItemActivity extends AppCompatActivity {
         etName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
             public void afterTextChanged(final Editable editable) {
                 strName = editable.toString();
                 checkEditTextHasText();
-
             }
 
         });
@@ -49,42 +46,31 @@ public class AddItemActivity extends AppCompatActivity {
         etPrice.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
             public void afterTextChanged(final Editable s) {
                 strPrice = s.toString();
                 checkEditTextHasText();
-
             }
         });
 
         btnAdd = findViewById(R.id.btnAddItemAdd);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(final View v) {
-
-                if (!TextUtils.isEmpty(strName) && !TextUtils.isEmpty(strPrice)) {
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            R.string.btnAddItemAddTitle, Toast.LENGTH_SHORT);
-                    toast.show();
-                    finish();
-                }
+        btnAdd.setOnClickListener(v -> {
+            if (!TextUtils.isEmpty(strName) && !TextUtils.isEmpty(strPrice)) {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        R.string.btnAddItemAddTitle, Toast.LENGTH_SHORT);
+                toast.show();
+                finish();
             }
         });
     }
 
     public void checkEditTextHasText() {
         btnAdd.setEnabled(!TextUtils.isEmpty(strName) && !TextUtils.isEmpty(strPrice));
-
     }
-
-
 }

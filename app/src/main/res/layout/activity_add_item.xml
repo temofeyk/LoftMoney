@@ -6,7 +6,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnAddItemAdd"
+        android:layout_above="@id/btnAddItemAdd"
         android:layout_marginBottom="@dimen/add_item_margin_bottom"
         android:orientation="vertical"
         android:paddingStart="@dimen/add_item_padding_start"
@@ -15,12 +15,17 @@
             android:id="@+id/etAddItemName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/etAddItemNameHint"/>
+            style="@style/addItemEditText"
+            android:autofillHints="@string/etAddItemNameHint"
+            android:hint="@string/etAddItemNameHint"
+            android:inputType="text" />
         <EditText
             android:id="@+id/etAddItemPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/etAddItemPriceHint"
+            style="@style/addItemEditText"
+            android:autofillHints="@string/etAddItemPriceHint"
             android:inputType="numberDecimal" />
     </LinearLayout>
     <Button
@@ -29,7 +34,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/add_button_text_color_selector"
         android:enabled="false"
-        android:drawableLeft="@drawable/check_selector"
+        android:drawableStart="@drawable/check_selector"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:background="@null"
