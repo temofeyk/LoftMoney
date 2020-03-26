@@ -1,13 +1,12 @@
 package com.temofey.k.android.loftmoney.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -62,15 +61,15 @@ public class AddItemActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.btnAddItemAdd);
         btnAdd.setOnClickListener(v -> {
             if (!TextUtils.isEmpty(strName) && !TextUtils.isEmpty(strPrice)) {
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        R.string.btnAddItemAddTitle, Toast.LENGTH_SHORT);
-                toast.show();
+                setResult(
+                        RESULT_OK,
+                        new Intent().putExtra("name", strName).putExtra("price", strPrice));
                 finish();
             }
         });
     }
 
-    public void checkEditTextHasText() {
+    private void checkEditTextHasText() {
         btnAdd.setEnabled(!TextUtils.isEmpty(strName) && !TextUtils.isEmpty(strPrice));
     }
 }

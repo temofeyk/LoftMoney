@@ -4,4 +4,7 @@
     <string name="btnAddItemAddTitle">Add</string>
     <string name="etAddItemNameHint">Name</string>
     <string name="etAddItemPriceHint">Price</string>
+
+    <!--    items adapter-->
+    <string name="price_template" translatable="false">%1$s ₽</string>
 </resources>
