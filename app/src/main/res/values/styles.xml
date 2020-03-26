@@ -13,5 +13,10 @@
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">normal</item>
     </style>
+    <!--    Item-->
+    <style name="itemTextView">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">20sp</item>
+    </style>
 
 </resources>

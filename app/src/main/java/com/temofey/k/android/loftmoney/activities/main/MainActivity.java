@@ -18,7 +18,7 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final int REQUEST_CODE = 100;
+    private static final int REQUEST_CODE = 100;
     private ItemsAdapter adapter;
 
     @Override
@@ -44,17 +44,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        int price = 0;
-        try {
-            if (data != null) {
-                price = Integer.parseInt(Objects.requireNonNull(data.getStringExtra("price")));
-            }
-        } catch (NumberFormatException ignored) {
-        }
-
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             List<Item> itemsList = new ArrayList<>(adapter.getItemsList());
-            itemsList.add(0, new Item(Objects.requireNonNull(data).getStringExtra("name"), price, Item.getNewId()));
+            Item item = (Item) Objects.requireNonNull(data).getSerializableExtra(Item.ITEM_INTENT_KEY);
+            itemsList.add(0, item);
             adapter.setItemsList(itemsList);
         }
     }

@@ -11,6 +11,7 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.temofey.k.android.loftmoney.R;
+import com.temofey.k.android.loftmoney.data.model.Item;
 
 public class AddItemActivity extends AppCompatActivity {
 
@@ -61,9 +62,16 @@ public class AddItemActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.btnAddItemAdd);
         btnAdd.setOnClickListener(v -> {
             if (!TextUtils.isEmpty(strName) && !TextUtils.isEmpty(strPrice)) {
+                int price = 0;
+                try {
+                    price = Integer.parseInt(strPrice);
+
+                } catch (NumberFormatException ignored) {
+                }
+                Item item = new Item(strName, price, Item.getNewId());
                 setResult(
                         RESULT_OK,
-                        new Intent().putExtra("name", strName).putExtra("price", strPrice));
+                        new Intent().putExtra(Item.ITEM_INTENT_KEY, item));
                 finish();
             }
         });

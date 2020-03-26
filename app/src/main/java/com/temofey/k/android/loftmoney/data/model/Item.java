@@ -1,9 +1,10 @@
 package com.temofey.k.android.loftmoney.data.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Item {
+public class Item implements Serializable {
 
     private static final AtomicInteger COUNTER = new AtomicInteger(1);
     private String name;
@@ -19,6 +20,8 @@ public class Item {
     public static int getNewId() {
         return COUNTER.getAndIncrement();
     }
+
+    public static final String ITEM_INTENT_KEY = "item";
 
     public String getName() {
         return name;

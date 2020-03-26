@@ -8,32 +8,30 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="24dp"
-        android:paddingTop="29dp"
-        android:paddingEnd="24dp"
-        android:paddingBottom="29dp">
+        android:paddingStart="@dimen/item_horizontal_padding"
+        android:paddingTop="@dimen/item_vertical_padding"
+        android:paddingEnd="@dimen/item_horizontal_padding"
+        android:paddingBottom="@dimen/item_vertical_padding">
 
         <TextView
             android:id="@+id/txtItemName"
+            style="@style/itemTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@id/txtItemPrice"
-            android:fontFamily="sans-serif"
             android:textColor="@color/medium_grey"
-            android:textSize="20sp"
             tools:text="Very very long name charge with text wrap" />
 
         <TextView
             android:id="@+id/txtItemPrice"
+            style="@style/itemTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_gravity="end"
-            android:fontFamily="sans-serif"
             android:textColor="@color/dark_sky_blue"
-            android:textSize="20sp"
             android:textStyle="bold"
             tools:text="100500 ₽" />
 

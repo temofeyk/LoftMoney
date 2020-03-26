@@ -6,7 +6,7 @@ import com.temofey.k.android.loftmoney.data.model.Item;
 
 import java.util.List;
 
-public class ItemsDiffUtil extends DiffUtil.Callback {
+class ItemsDiffUtil extends DiffUtil.Callback {
     private final List<Item> oldList;
     private final List<Item> newList;
 
