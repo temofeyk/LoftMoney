@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -30,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
         fabAddItem.setOnClickListener(v -> startActivityForResult(new Intent(MainActivity.this, AddItemActivity.class), REQUEST_CODE));
 
         RecyclerView recyclerView = findViewById(R.id.recyclerMainItemsList);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation()));
+
         adapter = new ItemsAdapter();
         List<Item> itemsList = new ArrayList<>();
         itemsList.add(new Item("Гречка", 1200, Item.getNewId()));
@@ -38,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         itemsList.add(new Item("Сковородка с антипригарным покрытием", 2600, Item.getNewId()));
         adapter.setItemsList(itemsList);
         recyclerView.setAdapter(adapter);
+
     }
 
     @Override
