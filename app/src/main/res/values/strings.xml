@@ -11,4 +11,10 @@
     <!--    Main activity-->
     <string name="outcomes">Outcomes</string>
     <string name="incomes">Incomes</string>
+
+    <string-array name="main_tabs">
+        <item>@string/incomes</item>
+        <item>@string/outcomes</item>
+    </string-array>
+
 </resources>

@@ -28,7 +28,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = View.inflate(parent.getContext(), R.layout.item_view, null);
-        if (position == MainActivity.BudgetPagerAdapter.PAGE_INCOMES) {
+        if (position == MainActivity.BudgetPagerStateAdapter.PAGE_INCOMES) {
             TextView textView = itemView.findViewById(R.id.txtItemPrice);
             textView.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.apple_green));
         }

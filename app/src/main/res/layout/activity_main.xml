@@ -14,9 +14,9 @@
         android:background="@color/dark_sky_blue"
         app:tabTextColor="@android:color/white" />
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 </LinearLayout>

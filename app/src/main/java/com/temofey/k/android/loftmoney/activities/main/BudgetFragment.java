@@ -1,6 +1,5 @@
 package com.temofey.k.android.loftmoney.activities.main;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,7 +37,7 @@ public class BudgetFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.fragment_budget, null);
+        View view = inflater.inflate(R.layout.fragment_budget, container);
 
         FloatingActionButton fabAddItem = view.findViewById(R.id.fabBudgetAddItem);
         fabAddItem.setOnClickListener(v -> startActivityForResult(new Intent(getActivity(), AddItemActivity.class), REQUEST_CODE));
@@ -51,12 +50,12 @@ public class BudgetFragment extends Fragment {
 
         adapter = new ItemsAdapter(position);
         List<Item> itemsList = new ArrayList<>();
-        if (position == MainActivity.BudgetPagerAdapter.PAGE_OUTCOMES) {
+        if (position == MainActivity.BudgetPagerStateAdapter.PAGE_OUTCOMES) {
             itemsList.add(new Item("Гречка", 1200, Item.getNewId()));
             itemsList.add(new Item("Патроны", 4500, Item.getNewId()));
             itemsList.add(new Item("Туалетная бумага", 600, Item.getNewId()));
             itemsList.add(new Item("Сковородка с антипригарным покрытием", 2600, Item.getNewId()));
-        } else if (position == MainActivity.BudgetPagerAdapter.PAGE_INCOMES) {
+        } else if (position == MainActivity.BudgetPagerStateAdapter.PAGE_INCOMES) {
             itemsList.add(new Item("Долг за алюминий", 15000, Item.getNewId()));
             itemsList.add(new Item("Аванс", 30000, Item.getNewId()));
         }

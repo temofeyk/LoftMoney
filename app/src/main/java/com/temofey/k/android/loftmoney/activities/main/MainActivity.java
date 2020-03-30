@@ -5,14 +5,13 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.temofey.k.android.loftmoney.R;
-
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,33 +21,35 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         TabLayout tabLayout = findViewById(R.id.tabs);
+        ViewPager2 viewPager = findViewById(R.id.viewpager);
 
-        ViewPager viewPager = findViewById(R.id.viewpager);
-        viewPager.setAdapter(new BudgetPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT));
-
-        tabLayout.setupWithViewPager(viewPager);
-        Objects.requireNonNull(tabLayout.getTabAt(0)).setText(R.string.outcomes);
-        Objects.requireNonNull(tabLayout.getTabAt(1)).setText(R.string.incomes);
-
+        BudgetPagerStateAdapter budgetPagerStateAdapter = new BudgetPagerStateAdapter(this);
+        viewPager.setAdapter(budgetPagerStateAdapter);
+        String[] pagesTitles = getResources().getStringArray(R.array.main_tabs);
+        new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> tab.setText(pagesTitles[position])
+        ).attach();
     }
 
-    static class BudgetPagerAdapter extends FragmentPagerAdapter {
+    class BudgetPagerStateAdapter extends FragmentStateAdapter {
         final static int PAGE_OUTCOMES = 0;
         final static int PAGE_INCOMES = 1;
 
-        BudgetPagerAdapter(@NonNull final FragmentManager fm, final int behavior) {
-            super(fm, behavior);
+        private final static int NUM_PAGES = 2;
+
+        BudgetPagerStateAdapter(@NonNull FragmentActivity fragmentActivity) {
+            super(fragmentActivity);
         }
 
         @NonNull
         @Override
-        public Fragment getItem(final int position) {
+        public Fragment createFragment(int position) {
             return new BudgetFragment(position);
         }
 
         @Override
-        public int getCount() {
-            return 2;
+        public int getItemCount() {
+            return NUM_PAGES;
         }
     }
 }
