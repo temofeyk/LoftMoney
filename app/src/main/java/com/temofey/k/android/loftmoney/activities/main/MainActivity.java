@@ -1,61 +1,52 @@
 package com.temofey.k.android.loftmoney.activities.main;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.temofey.k.android.loftmoney.R;
-import com.temofey.k.android.loftmoney.activities.AddItemActivity;
-import com.temofey.k.android.loftmoney.data.model.Item;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-
-    private static final int REQUEST_CODE = 100;
-    private ItemsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FloatingActionButton fabAddItem = findViewById(R.id.fabMainAddItem);
-        fabAddItem.setOnClickListener(v -> startActivityForResult(new Intent(MainActivity.this, AddItemActivity.class), REQUEST_CODE));
+        TabLayout tabLayout = findViewById(R.id.tabs);
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerMainItemsList);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation()));
+        ViewPager viewPager = findViewById(R.id.viewpager);
+        viewPager.setAdapter(new BudgetPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT));
 
-        adapter = new ItemsAdapter();
-        List<Item> itemsList = new ArrayList<>();
-        itemsList.add(new Item("Гречка", 1200, Item.getNewId()));
-        itemsList.add(new Item("Патроны", 4500, Item.getNewId()));
-        itemsList.add(new Item("Туалетная бумага", 600, Item.getNewId()));
-        itemsList.add(new Item("Сковородка с антипригарным покрытием", 2600, Item.getNewId()));
-        adapter.setItemsList(itemsList);
-        recyclerView.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+        Objects.requireNonNull(tabLayout.getTabAt(0)).setText(R.string.outcomes);
+        Objects.requireNonNull(tabLayout.getTabAt(1)).setText(R.string.incomes);
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    static class BudgetPagerAdapter extends FragmentPagerAdapter {
 
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            List<Item> itemsList = new ArrayList<>(adapter.getItemsList());
-            Item item = (Item) Objects.requireNonNull(data).getSerializableExtra(Item.ITEM_INTENT_KEY);
-            itemsList.add(0, item);
-            adapter.setItemsList(itemsList);
+        BudgetPagerAdapter(@NonNull final FragmentManager fm, final int behavior) {
+            super(fm, behavior);
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(final int position) {
+            return new BudgetFragment(position);
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
         }
     }
 }

@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,12 +18,20 @@ import java.util.List;
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHolder> {
 
     private List<Item> itemsList = new ArrayList<>();
+    private final int position;
+
+    ItemsAdapter(int position) {
+        this.position = position;
+    }
 
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = View.inflate(parent.getContext(), R.layout.item_view, null);
-
+        if (position == 1) {
+            TextView textView = itemView.findViewById(R.id.txtItemPrice);
+            textView.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.apple_green));
+        }
         return new ItemViewHolder(itemView);
     }
 

@@ -7,4 +7,8 @@
 
     <!--    items adapter-->
     <string name="price_template" translatable="false">%1$s ₽</string>
+
+    <!--    Main activity-->
+    <string name="outcomes">Outcomes</string>
+    <string name="incomes">Incomes</string>
 </resources>
