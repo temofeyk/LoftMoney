@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     static class BudgetPagerAdapter extends FragmentPagerAdapter {
+        final static int PAGE_OUTCOMES = 0;
+        final static int PAGE_INCOMES = 1;
 
         BudgetPagerAdapter(@NonNull final FragmentManager fm, final int behavior) {
             super(fm, behavior);

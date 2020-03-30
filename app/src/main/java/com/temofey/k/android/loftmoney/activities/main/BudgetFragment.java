@@ -51,12 +51,12 @@ public class BudgetFragment extends Fragment {
 
         adapter = new ItemsAdapter(position);
         List<Item> itemsList = new ArrayList<>();
-        if (position == 0) {
+        if (position == MainActivity.BudgetPagerAdapter.PAGE_OUTCOMES) {
             itemsList.add(new Item("Гречка", 1200, Item.getNewId()));
             itemsList.add(new Item("Патроны", 4500, Item.getNewId()));
             itemsList.add(new Item("Туалетная бумага", 600, Item.getNewId()));
             itemsList.add(new Item("Сковородка с антипригарным покрытием", 2600, Item.getNewId()));
-        } else if (position == 1) {
+        } else if (position == MainActivity.BudgetPagerAdapter.PAGE_INCOMES) {
             itemsList.add(new Item("Долг за алюминий", 15000, Item.getNewId()));
             itemsList.add(new Item("Аванс", 30000, Item.getNewId()));
         }
