@@ -13,8 +13,8 @@
     <string name="incomes">Incomes</string>
 
     <string-array name="main_tabs">
-        <item>@string/incomes</item>
         <item>@string/outcomes</item>
+        <item>@string/incomes</item>
     </string-array>
 
 </resources>
