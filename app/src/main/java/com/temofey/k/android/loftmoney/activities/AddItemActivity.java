@@ -1,17 +1,17 @@
 package com.temofey.k.android.loftmoney.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.temofey.k.android.loftmoney.R;
+import com.temofey.k.android.loftmoney.data.model.Item;
 
 public class AddItemActivity extends AppCompatActivity {
 
@@ -62,15 +62,22 @@ public class AddItemActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.btnAddItemAdd);
         btnAdd.setOnClickListener(v -> {
             if (!TextUtils.isEmpty(strName) && !TextUtils.isEmpty(strPrice)) {
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        R.string.btnAddItemAddTitle, Toast.LENGTH_SHORT);
-                toast.show();
+                int price = 0;
+                try {
+                    price = Integer.parseInt(strPrice);
+
+                } catch (NumberFormatException ignored) {
+                }
+                Item item = new Item(strName, price, Item.getNewId());
+                setResult(
+                        RESULT_OK,
+                        new Intent().putExtra(Item.ITEM_INTENT_KEY, item));
                 finish();
             }
         });
     }
 
-    public void checkEditTextHasText() {
+    private void checkEditTextHasText() {
         btnAdd.setEnabled(!TextUtils.isEmpty(strName) && !TextUtils.isEmpty(strPrice));
     }
 }

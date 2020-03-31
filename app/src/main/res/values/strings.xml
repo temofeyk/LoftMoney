@@ -4,4 +4,17 @@
     <string name="btnAddItemAddTitle">Add</string>
     <string name="etAddItemNameHint">Name</string>
     <string name="etAddItemPriceHint">Price</string>
+
+    <!--    items adapter-->
+    <string name="price_template" translatable="false">%1$s ₽</string>
+
+    <!--    Main activity-->
+    <string name="outcomes">Outcomes</string>
+    <string name="incomes">Incomes</string>
+
+    <string-array name="main_tabs">
+        <item>@string/outcomes</item>
+        <item>@string/incomes</item>
+    </string-array>
+
 </resources>

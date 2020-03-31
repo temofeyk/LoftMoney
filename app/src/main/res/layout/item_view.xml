@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/item_horizontal_padding"
+        android:paddingTop="@dimen/item_vertical_padding"
+        android:paddingEnd="@dimen/item_horizontal_padding"
+        android:paddingBottom="@dimen/item_vertical_padding">
+
+        <TextView
+            android:id="@+id/txtItemName"
+            style="@style/itemTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/txtItemPrice"
+            android:textColor="@color/medium_grey"
+            tools:text="Very very long name charge with text wrap" />
+
+        <TextView
+            android:id="@+id/txtItemPrice"
+            style="@style/itemTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="end"
+            android:textColor="@color/dark_sky_blue"
+            android:textStyle="bold"
+            tools:text="100500 ₽" />
+
+    </RelativeLayout>
+
+</FrameLayout>
