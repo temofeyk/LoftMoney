@@ -28,14 +28,37 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    // recyclerview
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    // appcompat
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    // material
-    implementation 'com.google.android.material:material:1.1.0'
 
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    // Android X
+    def androidXVersion = '1.1.0'
+    implementation "androidx.appcompat:appcompat:$androidXVersion"
+    implementation "androidx.recyclerview:recyclerview:$androidXVersion"
+    implementation "androidx.preference:preference:$androidXVersion"
+
+    // swipe refresh
+    def swipeRefreshVersion = '1.0.0'
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshVersion"
+
+    // material
+    def materialVersion = '1.1.0'
+    implementation "com.google.android.material:material:$materialVersion"
+
+    // RxJava
+    def rxJavaVersion = '2.1.1'
+    implementation "io.reactivex.rxjava2:rxandroid:$rxJavaVersion"
+
+    // Internet
+    def okHttpVersion = '4.4.0'
+    def retrofitVersion = '2.8.1'
+    def gsonVersion = '2.8.6'
+    def gsonConverterVersion = '2.5.0'
+    implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation "com.google.code.gson:gson:$gsonVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$gsonConverterVersion"
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

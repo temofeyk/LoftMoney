@@ -6,10 +6,10 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.Button;
-import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.temofey.k.android.loftmoney.R;
 import com.temofey.k.android.loftmoney.data.model.Item;
 
@@ -25,7 +25,7 @@ public class AddItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
 
-        EditText etName = findViewById(R.id.etAddItemName);
+        TextInputEditText etName = findViewById(R.id.etAddItemName);
         etName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -42,7 +42,7 @@ public class AddItemActivity extends AppCompatActivity {
             }
 
         });
-        EditText etPrice = findViewById(R.id.etAddItemPrice);
+        TextInputEditText etPrice = findViewById(R.id.etAddItemPrice);
         etPrice.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

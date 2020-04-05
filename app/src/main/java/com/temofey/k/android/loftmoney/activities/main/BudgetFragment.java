@@ -54,6 +54,13 @@ public class BudgetFragment extends Fragment {
             itemsList.add(new Item("Гречка", 1200, Item.getNewId()));
             itemsList.add(new Item("Патроны", 4500, Item.getNewId()));
             itemsList.add(new Item("Туалетная бумага", 600, Item.getNewId()));
+
+            itemsList.add(new Item("Гречка", 1200, Item.getNewId()));
+            itemsList.add(new Item("Патроны", 4500, Item.getNewId()));
+            itemsList.add(new Item("Туалетная бумага", 600, Item.getNewId()));
+            itemsList.add(new Item("Гречка", 1200, Item.getNewId()));
+            itemsList.add(new Item("Патроны", 4500, Item.getNewId()));
+            itemsList.add(new Item("Туалетная бумага", 600, Item.getNewId()));
             itemsList.add(new Item("Сковородка с антипригарным покрытием", 2600, Item.getNewId()));
         } else if (position == MainActivity.BudgetPagerStateAdapter.PAGE_INCOMES) {
             itemsList.add(new Item("Долг за алюминий", 15000, Item.getNewId()));
