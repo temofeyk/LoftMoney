@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -101,14 +102,13 @@ public class BudgetFragment extends Fragment {
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(itemsResponse -> {
-                            List<Item> itemsList = new ArrayList<>();
-                            for (ItemRemote itemRemote : itemsResponse.getData()) {
-                                itemsList.add(new Item(itemRemote));
-                            }
-                            adapter.setItemsList(itemsList);
-                        }
+                    List<Item> itemsList = new ArrayList<>();
+                    for (ItemRemote itemRemote : itemsResponse.getData()) {
+                        itemsList.add(new Item(itemRemote));
+                    }
+                    adapter.setItemsList(itemsList);
+                }, throwable -> Toast.makeText(getContext(), throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
 
-                );
         disposables.add(response);
     }
 }

@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -99,11 +100,13 @@ public class AddItemActivity extends AppCompatActivity {
                                             RESULT_OK,
                                             new Intent().putExtra(Item.ITEM_INTENT_KEY, item));
                                     finish();
+                                }, throwable -> {
+                                    Toast.makeText(this, throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                    btnAdd.setEnabled(true);
                                 }
 
                         );
                 disposables.add(response);
-
             }
         });
     }
