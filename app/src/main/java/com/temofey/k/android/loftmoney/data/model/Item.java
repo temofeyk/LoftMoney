@@ -9,10 +9,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Item implements Serializable {
 
-    private static final AtomicInteger COUNTER = new AtomicInteger(1);
     private String name;
     private int price;
-    private Integer id;
+    private String id;
 
     public Item(ItemRemote itemRemote) {
         this.id = itemRemote.getId();
@@ -20,14 +19,10 @@ public class Item implements Serializable {
         this.price = itemRemote.getPrice();
     }
 
-    public Item(String name, int price, Integer id) {
+    public Item(String name, int price, String id) {
         this.name = name;
         this.price = price;
         this.id = id;
-    }
-
-    public static int getNewId() {
-        return COUNTER.getAndIncrement();
     }
 
     public static final String ITEM_INTENT_KEY = "item";
@@ -48,11 +43,11 @@ public class Item implements Serializable {
         this.price = price;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -62,7 +57,7 @@ public class Item implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Item item = (Item) o;
         return getPrice() == item.getPrice() &&
-                getId() == item.getId() &&
+                getId().equals(item.getId()) &&
                 getName().equals(item.getName());
     }
 

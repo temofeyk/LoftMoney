@@ -65,7 +65,12 @@ public class BudgetFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_budget, container);
 
         FloatingActionButton fabAddItem = view.findViewById(R.id.fabBudgetAddItem);
-        fabAddItem.setOnClickListener(v -> startActivityForResult(new Intent(getActivity(), AddItemActivity.class), REQUEST_CODE));
+        fabAddItem.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AddItemActivity.class);
+            intent.putExtra(AddItemActivity.COLOR_INTENT_KEY, Objects.requireNonNull(getArguments()).getInt(COLOR_ID));
+            intent.putExtra(AddItemActivity.TYPE_INTENT_KEY, Objects.requireNonNull(getArguments()).getString(TYPE));
+            startActivityForResult(intent, REQUEST_CODE);
+        });
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerBudgetItemsList);
 

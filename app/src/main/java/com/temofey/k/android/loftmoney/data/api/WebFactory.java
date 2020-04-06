@@ -37,4 +37,7 @@ public class WebFactory {
         return retrofit.create(GetItemsRequest.class);
     }
 
+    public PostItemRequest getPostItemRequest() {
+        return retrofit.create(PostItemRequest.class);
+    }
 }

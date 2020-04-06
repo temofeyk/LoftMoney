@@ -2,13 +2,13 @@ package com.temofey.k.android.loftmoney.data.api.model;
 
 public class ItemRemote {
 
-    private int id;
+    private String id;
     private String name;
     private Integer price;
     private String type;
     private String date;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
