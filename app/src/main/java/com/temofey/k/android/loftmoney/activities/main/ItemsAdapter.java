@@ -17,21 +17,19 @@ import java.util.List;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHolder> {
 
-    private final int position;
+    private final int colorId;
     private List<Item> itemsList = new ArrayList<>();
 
-    ItemsAdapter(int position) {
-        this.position = position;
+    ItemsAdapter(int colorId) {
+        this.colorId = colorId;
     }
 
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = View.inflate(parent.getContext(), R.layout.item_view, null);
-        if (position == MainActivity.BudgetPagerStateAdapter.PAGE_INCOMES) {
-            TextView textView = itemView.findViewById(R.id.txtItemPrice);
-            textView.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.apple_green));
-        }
+        TextView textView = itemView.findViewById(R.id.txtItemPrice);
+        textView.setTextColor(ContextCompat.getColor(itemView.getContext(), colorId));
         return new ItemViewHolder(itemView);
     }
 

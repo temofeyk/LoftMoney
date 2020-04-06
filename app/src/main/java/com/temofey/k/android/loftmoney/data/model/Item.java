@@ -1,5 +1,8 @@
 package com.temofey.k.android.loftmoney.data.model;
 
+import com.temofey.k.android.loftmoney.activities.main.ItemsAdapter;
+import com.temofey.k.android.loftmoney.data.api.model.ItemRemote;
+
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -9,9 +12,15 @@ public class Item implements Serializable {
     private static final AtomicInteger COUNTER = new AtomicInteger(1);
     private String name;
     private int price;
-    private int id;
+    private Integer id;
 
-    public Item(String name, int price, int id) {
+    public Item(ItemRemote itemRemote) {
+        this.id = itemRemote.getId();
+        this.name = itemRemote.getName();
+        this.price = itemRemote.getPrice();
+    }
+
+    public Item(String name, int price, Integer id) {
         this.name = name;
         this.price = price;
         this.id = id;

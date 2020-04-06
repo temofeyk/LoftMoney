@@ -17,20 +17,45 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.temofey.k.android.loftmoney.R;
 import com.temofey.k.android.loftmoney.activities.AddItemActivity;
+import com.temofey.k.android.loftmoney.data.api.WebFactory;
+import com.temofey.k.android.loftmoney.data.api.model.ItemRemote;
 import com.temofey.k.android.loftmoney.data.model.Item;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class BudgetFragment extends Fragment {
 
     private static final int REQUEST_CODE = 100;
-    private ItemsAdapter adapter;
-    private int position;
+    private static final String COLOR_ID = "colorId";
+    private static final String TYPE = "fragmentType";
 
-    BudgetFragment(int position) {
-        this.position = position;
+    private ItemsAdapter adapter;
+    private List<Disposable> disposables = new ArrayList<>();
+
+    static BudgetFragment newInstance(final int colorId, final String type) {
+        BudgetFragment budgetFragment = new BudgetFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(COLOR_ID, colorId);
+        bundle.putString(TYPE, type);
+        budgetFragment.setArguments(bundle);
+        return budgetFragment;
+
+    }
+
+    @Override
+    public void onStop() {
+
+        for (Disposable disposable : disposables) {
+            disposable.dispose();
+        }
+        disposables.clear();
+        super.onStop();
     }
 
     @Nullable
@@ -48,26 +73,9 @@ public class BudgetFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation()));
 
-        adapter = new ItemsAdapter(position);
-        List<Item> itemsList = new ArrayList<>();
-        if (position == MainActivity.BudgetPagerStateAdapter.PAGE_OUTCOMES) {
-            itemsList.add(new Item("Гречка", 1200, Item.getNewId()));
-            itemsList.add(new Item("Патроны", 4500, Item.getNewId()));
-            itemsList.add(new Item("Туалетная бумага", 600, Item.getNewId()));
-
-            itemsList.add(new Item("Гречка", 1200, Item.getNewId()));
-            itemsList.add(new Item("Патроны", 4500, Item.getNewId()));
-            itemsList.add(new Item("Туалетная бумага", 600, Item.getNewId()));
-            itemsList.add(new Item("Гречка", 1200, Item.getNewId()));
-            itemsList.add(new Item("Патроны", 4500, Item.getNewId()));
-            itemsList.add(new Item("Туалетная бумага", 600, Item.getNewId()));
-            itemsList.add(new Item("Сковородка с антипригарным покрытием", 2600, Item.getNewId()));
-        } else if (position == MainActivity.BudgetPagerStateAdapter.PAGE_INCOMES) {
-            itemsList.add(new Item("Долг за алюминий", 15000, Item.getNewId()));
-            itemsList.add(new Item("Аванс", 30000, Item.getNewId()));
-        }
-        adapter.setItemsList(itemsList);
+        adapter = new ItemsAdapter(Objects.requireNonNull(getArguments()).getInt(COLOR_ID));
         recyclerView.setAdapter(adapter);
+        loadItems();
         return view;
     }
 
@@ -83,4 +91,19 @@ public class BudgetFragment extends Fragment {
         }
     }
 
+    private void loadItems() {
+        Disposable response = WebFactory.getInstance().getItemsRequest().request(Objects.requireNonNull(getArguments()).getString(TYPE))
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(itemsResponse -> {
+                            List<Item> itemsList = new ArrayList<>();
+                            for (ItemRemote itemRemote : itemsResponse.getData()) {
+                                itemsList.add(new Item(itemRemote));
+                            }
+                            adapter.setItemsList(itemsList);
+                        }
+
+                );
+        disposables.add(response);
+    }
 }
