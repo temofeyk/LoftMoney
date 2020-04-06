@@ -102,7 +102,7 @@ public class AddItemActivity extends AppCompatActivity {
                                 }
 
                         );
-
+                disposables.add(response);
 
             }
         });
