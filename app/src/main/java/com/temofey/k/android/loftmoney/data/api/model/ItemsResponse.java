@@ -2,6 +2,8 @@ package com.temofey.k.android.loftmoney.data.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
+
+import java.util.Collections;
 import java.util.List;
 
 public class ItemsResponse {
@@ -16,6 +18,8 @@ public class ItemsResponse {
     }
 
     public List<ItemRemote> getData() {
+
+        Collections.sort(data, (itemRemote, t1) -> itemRemote.getId().compareTo(t1.getId()));
         return data;
     }
 }

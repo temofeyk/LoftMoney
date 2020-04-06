@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.temofey.k.android.loftmoney.R;
@@ -38,6 +39,7 @@ public class BudgetFragment extends Fragment {
 
     private ItemsAdapter adapter;
     private List<Disposable> disposables = new ArrayList<>();
+    private SwipeRefreshLayout refreshLayout;
 
     static BudgetFragment newInstance(final int colorId, final String type) {
         BudgetFragment budgetFragment = new BudgetFragment();
@@ -66,6 +68,8 @@ public class BudgetFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_budget, container);
 
         FloatingActionButton fabAddItem = view.findViewById(R.id.fabBudgetAddItem);
+        refreshLayout = view.findViewById(R.id.refreshBudget);
+        refreshLayout.setOnRefreshListener(this::loadItems);
         fabAddItem.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AddItemActivity.class);
             intent.putExtra(AddItemActivity.COLOR_INTENT_KEY, Objects.requireNonNull(getArguments()).getInt(COLOR_ID));
@@ -92,7 +96,7 @@ public class BudgetFragment extends Fragment {
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             List<Item> itemsList = new ArrayList<>(adapter.getItemsList());
             Item item = (Item) Objects.requireNonNull(data).getSerializableExtra(Item.ITEM_INTENT_KEY);
-            itemsList.add(0, item);
+            itemsList.add(item);
             adapter.setItemsList(itemsList);
         }
     }
@@ -107,7 +111,11 @@ public class BudgetFragment extends Fragment {
                         itemsList.add(new Item(itemRemote));
                     }
                     adapter.setItemsList(itemsList);
-                }, throwable -> Toast.makeText(getContext(), throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
+                    refreshLayout.setRefreshing(false);
+                }, throwable -> {
+                    refreshLayout.setRefreshing(false);
+                    Toast.makeText(getContext(), throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                });
 
         disposables.add(response);
     }
