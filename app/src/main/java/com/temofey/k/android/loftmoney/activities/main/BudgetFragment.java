@@ -17,13 +17,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.temofey.k.android.loftmoney.App;
 import com.temofey.k.android.loftmoney.R;
 import com.temofey.k.android.loftmoney.activities.AddItemActivity;
 import com.temofey.k.android.loftmoney.data.api.WebFactory;
 import com.temofey.k.android.loftmoney.data.api.model.ItemRemote;
 import com.temofey.k.android.loftmoney.data.model.Item;
+import com.temofey.k.android.loftmoney.data.prefs.Prefs;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -102,12 +105,22 @@ public class BudgetFragment extends Fragment {
     }
 
     private void loadItems() {
-        Disposable response = WebFactory.getInstance().getItemsRequest().request(Objects.requireNonNull(getArguments()).getString(TYPE))
+        Activity activity = getActivity();
+
+        if (activity == null) {
+            return;
+        }
+        Prefs prefs = ((App) getActivity().getApplication()).getPrefs();
+
+        String token = prefs.getToken();
+        Disposable response = WebFactory.getInstance().getItemsRequest()
+                .request(Objects.requireNonNull(getArguments()).getString(TYPE), token)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(itemsResponse -> {
+                .subscribe(itemRemotes -> {
                     List<Item> itemsList = new ArrayList<>();
-                    for (ItemRemote itemRemote : itemsResponse.getData()) {
+                    Collections.sort(itemRemotes, (itemRemote, t1) -> itemRemote.getUpdated_at().compareTo(t1.getUpdated_at()));
+                    for (ItemRemote itemRemote : itemRemotes) {
                         itemsList.add(new Item(itemRemote));
                     }
                     adapter.setItemsList(itemsList);

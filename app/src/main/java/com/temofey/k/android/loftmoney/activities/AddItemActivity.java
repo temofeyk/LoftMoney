@@ -12,9 +12,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.temofey.k.android.loftmoney.App;
 import com.temofey.k.android.loftmoney.R;
 import com.temofey.k.android.loftmoney.data.api.WebFactory;
 import com.temofey.k.android.loftmoney.data.model.Item;
+import com.temofey.k.android.loftmoney.data.prefs.Prefs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +92,10 @@ public class AddItemActivity extends AppCompatActivity {
 
                 btnAdd.setEnabled(false);
                 int finalPrice = price;
-                Disposable response = WebFactory.getInstance().getPostItemRequest().request(price, strName, type)
+                Prefs prefs = ((App) getApplication()).getPrefs();
+                String token = prefs.getToken();
+                Disposable response = WebFactory.getInstance().getPostItemRequest()
+                        .request(price, strName, type, token)
                         .subscribeOn(Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(addItemResponse -> {
