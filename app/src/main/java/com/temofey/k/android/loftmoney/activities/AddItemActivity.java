@@ -27,7 +27,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class AddItemActivity extends AppCompatActivity {
 
-    public static final String COLOR_INTENT_KEY = "colorId";
+    public static final String COLOR_INTENT_KEY = "textColor";
     public static final String TYPE_INTENT_KEY = "type";
 
     private Button btnAdd;

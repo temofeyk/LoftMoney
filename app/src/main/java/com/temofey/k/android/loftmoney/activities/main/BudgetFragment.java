@@ -110,7 +110,7 @@ public class BudgetFragment extends Fragment {
         if (activity == null) {
             return;
         }
-        Prefs prefs = ((App) getActivity().getApplication()).getPrefs();
+        Prefs prefs = ((App) activity.getApplication()).getPrefs();
 
         String token = prefs.getToken();
         Disposable response = WebFactory.getInstance().getItemsRequest()
