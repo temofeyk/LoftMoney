@@ -6,7 +6,10 @@ public class ItemRemote {
     private String name;
     private Integer price;
     private String type;
-    private String date;
+
+    private String created_at;
+    private String updated_at;
+    private String user_id;
 
     public String getId() {
         return id;
@@ -20,11 +23,7 @@ public class ItemRemote {
         return price;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public String getDate() {
-        return date;
+    public String getUpdated_at() {
+        return updated_at;
     }
 }

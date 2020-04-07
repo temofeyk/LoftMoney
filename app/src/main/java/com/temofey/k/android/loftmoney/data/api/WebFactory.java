@@ -7,19 +7,19 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WebFactory {
-    private static final String BaseUrl = "https://verdant-violet.glitch.me/";
+    private static final String BaseUrl = "https://loftschool.com/android-api/basic/v1/";
     private static WebFactory instance = null;
     private Retrofit retrofit;
-    private OkHttpClient okHttpClient;
 
     private WebFactory() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        okHttpClient = new OkHttpClient.Builder()
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
                 .build();
 
         retrofit = new Retrofit.Builder()
+                .client(okHttpClient)
                 .baseUrl(BaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -31,6 +31,10 @@ public class WebFactory {
             instance = new WebFactory();
         }
         return instance;
+    }
+
+    public AuthRequest getAuthRequest() {
+        return retrofit.create(AuthRequest.class);
     }
 
     public GetItemsRequest getItemsRequest() {

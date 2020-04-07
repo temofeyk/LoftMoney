@@ -7,4 +7,7 @@
     <!--    Main activity-->
     <string name="outcomes">Расходы</string>
     <string name="incomes">Доходы</string>
+    <!--    Auth activity-->
+    <string name="btAuthEnterText">войти</string>
+
 </resources>

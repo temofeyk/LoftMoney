@@ -11,6 +11,8 @@
     <!--    Main activity-->
     <string name="outcomes">Outcomes</string>
     <string name="incomes">Incomes</string>
+    <!--    Auth activity-->
+    <string name="btAuthEnterText">enter</string>
 
     <string-array name="main_tabs">
         <item>@string/outcomes</item>
