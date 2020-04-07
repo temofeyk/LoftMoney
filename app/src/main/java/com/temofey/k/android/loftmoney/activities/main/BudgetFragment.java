@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,24 +14,51 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.temofey.k.android.loftmoney.R;
 import com.temofey.k.android.loftmoney.activities.AddItemActivity;
+import com.temofey.k.android.loftmoney.data.api.WebFactory;
+import com.temofey.k.android.loftmoney.data.api.model.ItemRemote;
 import com.temofey.k.android.loftmoney.data.model.Item;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class BudgetFragment extends Fragment {
 
     private static final int REQUEST_CODE = 100;
-    private ItemsAdapter adapter;
-    private int position;
+    private static final String COLOR_ID = "colorId";
+    private static final String TYPE = "fragmentType";
 
-    BudgetFragment(int position) {
-        this.position = position;
+    private ItemsAdapter adapter;
+    private List<Disposable> disposables = new ArrayList<>();
+    private SwipeRefreshLayout refreshLayout;
+
+    static BudgetFragment newInstance(final int colorId, final String type) {
+        BudgetFragment budgetFragment = new BudgetFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(COLOR_ID, colorId);
+        bundle.putString(TYPE, type);
+        budgetFragment.setArguments(bundle);
+        return budgetFragment;
+
+    }
+
+    @Override
+    public void onStop() {
+
+        for (Disposable disposable : disposables) {
+            disposable.dispose();
+        }
+        disposables.clear();
+        super.onStop();
     }
 
     @Nullable
@@ -40,7 +68,14 @@ public class BudgetFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_budget, container);
 
         FloatingActionButton fabAddItem = view.findViewById(R.id.fabBudgetAddItem);
-        fabAddItem.setOnClickListener(v -> startActivityForResult(new Intent(getActivity(), AddItemActivity.class), REQUEST_CODE));
+        refreshLayout = view.findViewById(R.id.refreshBudget);
+        refreshLayout.setOnRefreshListener(this::loadItems);
+        fabAddItem.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AddItemActivity.class);
+            intent.putExtra(AddItemActivity.COLOR_INTENT_KEY, Objects.requireNonNull(getArguments()).getInt(COLOR_ID));
+            intent.putExtra(AddItemActivity.TYPE_INTENT_KEY, Objects.requireNonNull(getArguments()).getString(TYPE));
+            startActivityForResult(intent, REQUEST_CODE);
+        });
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerBudgetItemsList);
 
@@ -48,19 +83,9 @@ public class BudgetFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation()));
 
-        adapter = new ItemsAdapter(position);
-        List<Item> itemsList = new ArrayList<>();
-        if (position == MainActivity.BudgetPagerStateAdapter.PAGE_OUTCOMES) {
-            itemsList.add(new Item("Гречка", 1200, Item.getNewId()));
-            itemsList.add(new Item("Патроны", 4500, Item.getNewId()));
-            itemsList.add(new Item("Туалетная бумага", 600, Item.getNewId()));
-            itemsList.add(new Item("Сковородка с антипригарным покрытием", 2600, Item.getNewId()));
-        } else if (position == MainActivity.BudgetPagerStateAdapter.PAGE_INCOMES) {
-            itemsList.add(new Item("Долг за алюминий", 15000, Item.getNewId()));
-            itemsList.add(new Item("Аванс", 30000, Item.getNewId()));
-        }
-        adapter.setItemsList(itemsList);
+        adapter = new ItemsAdapter(Objects.requireNonNull(getArguments()).getInt(COLOR_ID));
         recyclerView.setAdapter(adapter);
+        loadItems();
         return view;
     }
 
@@ -71,9 +96,27 @@ public class BudgetFragment extends Fragment {
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             List<Item> itemsList = new ArrayList<>(adapter.getItemsList());
             Item item = (Item) Objects.requireNonNull(data).getSerializableExtra(Item.ITEM_INTENT_KEY);
-            itemsList.add(0, item);
+            itemsList.add(item);
             adapter.setItemsList(itemsList);
         }
     }
 
+    private void loadItems() {
+        Disposable response = WebFactory.getInstance().getItemsRequest().request(Objects.requireNonNull(getArguments()).getString(TYPE))
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(itemsResponse -> {
+                    List<Item> itemsList = new ArrayList<>();
+                    for (ItemRemote itemRemote : itemsResponse.getData()) {
+                        itemsList.add(new Item(itemRemote));
+                    }
+                    adapter.setItemsList(itemsList);
+                    refreshLayout.setRefreshing(false);
+                }, throwable -> {
+                    refreshLayout.setRefreshing(false);
+                    Toast.makeText(getContext(), throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                });
+
+        disposables.add(response);
+    }
 }

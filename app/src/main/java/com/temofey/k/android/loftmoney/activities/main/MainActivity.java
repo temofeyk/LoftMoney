@@ -12,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.temofey.k.android.loftmoney.R;
+import com.temofey.k.android.loftmoney.data.api.GetItemsRequest;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,7 +45,10 @@ public class MainActivity extends AppCompatActivity {
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            return new BudgetFragment(position);
+            if (position == PAGE_OUTCOMES) {
+                return BudgetFragment.newInstance(R.color.dark_sky_blue, GetItemsRequest.EXPENSE);
+            }
+            return BudgetFragment.newInstance(R.color.apple_green, GetItemsRequest.INCOME);
         }
 
         @Override
