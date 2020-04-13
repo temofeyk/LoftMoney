@@ -26,6 +26,7 @@ import com.temofey.k.android.loftmoney.App;
 import com.temofey.k.android.loftmoney.R;
 import com.temofey.k.android.loftmoney.activities.AddItemActivity;
 import com.temofey.k.android.loftmoney.data.api.WebFactory;
+import com.temofey.k.android.loftmoney.data.api.model.ItemOperationResponse;
 import com.temofey.k.android.loftmoney.data.api.model.ItemRemote;
 import com.temofey.k.android.loftmoney.data.model.Item;
 import com.temofey.k.android.loftmoney.data.prefs.Prefs;
@@ -35,8 +36,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class BudgetFragment extends Fragment implements ItemsAdapterListener, ActionMode.Callback {
@@ -155,28 +159,44 @@ public class BudgetFragment extends Fragment implements ItemsAdapterListener, Ac
         Prefs prefs = ((App) activity.getApplication()).getPrefs();
 
         String token = prefs.getToken();
-        List<Item> selectedItems = adapter.getSelectedItems();
+        Disposable response = Observable.fromIterable(adapter.getSelectedItems())
+                .flatMap(
+                        (Function<Item, ObservableSource<ItemOperationResponse>>)
+                                item -> WebFactory.getInstance()
+                                        .getRemoveItemRequest()
+                                        .request(item.getId(), token)
+                                        .toObservable(), ItemRemoveResult::new)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(itemRemoveResult -> {
+                    if (itemRemoveResult.getItemOperationResponse().statusIsSuccess()) {
+                        List<Item> itemsList = new ArrayList<>(adapter.getItemsList());
+                        itemsList.remove(itemRemoveResult.getItem());
+                        adapter.setItemsList(itemsList);
+                    } else {
+                        String status = itemRemoveResult.getItemOperationResponse().getStatus();
+                        Toast.makeText(getContext(), status, Toast.LENGTH_SHORT).show();
+                    }
+                });
+        disposables.add(response);
+    }
 
-        for (Item item : selectedItems) {
+    private static class ItemRemoveResult {
 
-            Disposable response = WebFactory.getInstance().getRemoveItemRequest()
-                    .request(item.getId(), token)
-                    .subscribeOn(Schedulers.computation())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(itemOperationResponse -> {
-                                if (itemOperationResponse.statusIsSuccess()) {
-                                    List<Item> itemsList = new ArrayList<>(adapter.getItemsList());
-                                    itemsList.remove(item);
-                                    adapter.setItemsList(itemsList);
-                                } else {
-                                    String status = itemOperationResponse.getStatus();
-                                    Toast.makeText(getContext(), status, Toast.LENGTH_SHORT).show();
-                                }
+        private Item item;
+        private ItemOperationResponse itemOperationResponse;
 
-                            }, throwable -> Toast.makeText(getContext(), throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show()
+        ItemRemoveResult(Item item, ItemOperationResponse itemOperationResponse) {
+            this.item = item;
+            this.itemOperationResponse = itemOperationResponse;
+        }
 
-                    );
-            disposables.add(response);
+        Item getItem() {
+            return item;
+        }
+
+        ItemOperationResponse getItemOperationResponse() {
+            return itemOperationResponse;
         }
     }
 
