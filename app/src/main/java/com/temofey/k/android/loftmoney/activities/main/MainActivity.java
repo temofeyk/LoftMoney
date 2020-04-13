@@ -1,9 +1,12 @@
 package com.temofey.k.android.loftmoney.activities.main;
 
 import android.os.Bundle;
+import android.view.ActionMode;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -16,12 +19,16 @@ import com.temofey.k.android.loftmoney.data.api.GetItemsRequest;
 
 public class MainActivity extends AppCompatActivity {
 
+    private TabLayout tabLayout;
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TabLayout tabLayout = findViewById(R.id.tabs);
+        tabLayout = findViewById(R.id.tabs);
+        toolbar = findViewById(R.id.toolbar);
         ViewPager2 viewPager = findViewById(R.id.viewpager);
 
         BudgetPagerStateAdapter budgetPagerStateAdapter = new BudgetPagerStateAdapter(this);
@@ -55,5 +62,20 @@ public class MainActivity extends AppCompatActivity {
         public int getItemCount() {
             return NUM_PAGES;
         }
+    }
+
+
+    @Override
+    public void onActionModeStarted(ActionMode mode) {
+        super.onActionModeStarted(mode);
+        tabLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.dark_grey_blue));
+        toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.dark_grey_blue));
+    }
+
+    @Override
+    public void onActionModeFinished(ActionMode mode) {
+        super.onActionModeFinished(mode);
+        tabLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
     }
 }

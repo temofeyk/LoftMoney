@@ -100,11 +100,16 @@ public class AddItemActivity extends AppCompatActivity {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(addItemResponse -> {
                                     String id = addItemResponse.getId();
-                                    Item item = new Item(strName, finalPrice, id);
-                                    setResult(
-                                            RESULT_OK,
-                                            new Intent().putExtra(Item.ITEM_INTENT_KEY, item));
-                                    finish();
+                            if (addItemResponse.statusIsSuccess()) {
+                                Item item = new Item(strName, finalPrice, id);
+                                setResult(
+                                        RESULT_OK,
+                                        new Intent().putExtra(Item.ITEM_INTENT_KEY, item));
+                                finish();
+                            } else {
+                                String status = addItemResponse.getStatus();
+                                Toast.makeText(this, status, Toast.LENGTH_SHORT).show();
+                            }
                                 }, throwable -> {
                                     Toast.makeText(this, throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                     btnAdd.setEnabled(true);

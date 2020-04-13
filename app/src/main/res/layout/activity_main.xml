@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context=".activities.main.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -11,18 +12,22 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|snap"
-            app:title="@string/app_name"
+            app:title="@string/main_title"
+            app:titleTextAppearance="@style/mainTitleText"
             app:titleTextColor="@color/white" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/dark_sky_blue"
-            app:tabTextColor="@android:color/white" />
+            android:background="@color/lightish_blue"
+            app:tabSelectedTextColor="@color/white_two"
+            app:tabTextAppearance="@style/tabTextStyle"
+            app:tabTextColor="@color/perrywinkle_70" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager2.widget.ViewPager2

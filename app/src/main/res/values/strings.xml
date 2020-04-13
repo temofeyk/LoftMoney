@@ -11,8 +11,17 @@
     <!--    Main activity-->
     <string name="outcomes">Outcomes</string>
     <string name="incomes">Incomes</string>
+
+    <!--    Budget fragment-->
+    <string name="selected">Selected: %1$s</string>
+
+    <!--    menu-->
+    <string name="remove">Remove</string>
+    <string name="confirmation">Are you sure you want to remove the selected items?</string>
+
     <!--    Auth activity-->
     <string name="btAuthEnterText">enter</string>
+    <string name="main_title">Budget accounting</string>
 
     <string-array name="main_tabs">
         <item>@string/outcomes</item>

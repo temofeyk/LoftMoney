@@ -1,5 +1,6 @@
 package com.temofey.k.android.loftmoney.activities.main;
 
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -19,9 +20,53 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
 
     private final int colorId;
     private List<Item> itemsList = new ArrayList<>();
+    private ItemsAdapterListener itemsAdapterListener;
+    private SparseBooleanArray selectedItems = new SparseBooleanArray();
 
     ItemsAdapter(int colorId) {
         this.colorId = colorId;
+    }
+
+    void setItemsAdapterListener(ItemsAdapterListener itemsAdapterListener) {
+        this.itemsAdapterListener = itemsAdapterListener;
+    }
+
+    void clearSelections() {
+        selectedItems.clear();
+        notifyDataSetChanged();
+    }
+
+    void clearItem(final int position) {
+        selectedItems.put(position, false);
+        notifyItemChanged(position);
+    }
+
+    void toggleItem(final int position) {
+        selectedItems.put(position, !selectedItems.get(position));
+        notifyItemChanged(position);
+    }
+
+    int getSelectedSize() {
+        int result = 0;
+        for (int i = 0; i < itemsList.size(); i++) {
+            if (selectedItems.get(i)) {
+                result++;
+            }
+        }
+
+        return result;
+    }
+
+    List<Item> getSelectedItems() {
+        List<Item> result = new ArrayList<>();
+        int i = 0;
+        for (Item item : itemsList) {
+            if (selectedItems.get(i)) {
+                result.add(item);
+            }
+            i++;
+        }
+        return result;
     }
 
     @NonNull
@@ -35,7 +80,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        holder.bindItem(itemsList.get(position));
+        holder.bindItem(itemsList.get(position), selectedItems.get(position));
+        holder.setListener(itemsAdapterListener, itemsList.get(position), position);
     }
 
     List<Item> getItemsList() {
@@ -57,19 +103,36 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
     static class ItemViewHolder extends RecyclerView.ViewHolder {
         private TextView nameView;
         private TextView priceView;
+        private View itemView;
 
         ItemViewHolder(@NonNull final View itemView) {
             super(itemView);
 
+            this.itemView = itemView;
             nameView = itemView.findViewById(R.id.txtItemName);
             priceView = itemView.findViewById(R.id.txtItemPrice);
         }
 
-        void bindItem(final Item item) {
+        void bindItem(final Item item, final boolean isSelected) {
+            itemView.setSelected(isSelected);
             nameView.setText(item.getName());
             priceView.setText(
                     priceView.getContext().getResources().getString(R.string.price_template, String.valueOf(item.getPrice()))
             );
         }
+
+        void setListener(final ItemsAdapterListener listener, final Item item, int position) {
+
+            itemView.setOnClickListener(view -> listener.onItemClick(item, position));
+
+            itemView.setOnLongClickListener(view -> {
+                        listener.onItemLongClick(item, position);
+                        return false;
+                    }
+            );
+
+
+        }
+
     }
 }

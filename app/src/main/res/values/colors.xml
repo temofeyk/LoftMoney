@@ -3,16 +3,22 @@
     <color name="colorPrimary">#3574fa</color>
     <color name="colorPrimaryDark">#3574fa</color>
     <color name="colorAccent">#ffc106</color>
+    <!--toolbar-->
+    <color name="white_two">#ffffff</color>
+    <color name="perrywinkle_70">#b38baaef</color>
+
     <!--add item-->
     <color name="apple_green">#7ed321</color>
     <color name="white">#dbdbdb</color>
     <color name="lightish_blue">#3574fa</color>
-    #
+
     <!--    items-->
     <color name="medium_grey">#666664</color>
-    <color name="white_two">#ffffff</color>
     <color name="white_five">#f2f2f2</color>
     <color name="white_six">#efefef</color>
     <color name="dark_sky_blue">#4a90e2</color>
+
+    <!--    action mode-->
+    <color name="dark_grey_blue">#333f59</color>
 
 </resources>
