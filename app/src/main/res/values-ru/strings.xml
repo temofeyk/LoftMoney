@@ -7,7 +7,13 @@
     <!--    Main activity-->
     <string name="outcomes">Расходы</string>
     <string name="incomes">Доходы</string>
+    <!--    Budget fragment-->
+    <string name="selected">Выделено: %1$s</string>
+    <!--    menu-->
+    <string name="remove">Удалить</string>
+    <string name="confirmation">Вы действительно хотите удалить выбранные пункты?</string>
     <!--    Auth activity-->
     <string name="btAuthEnterText">войти</string>
+    <string name="main_title">Учёт бюджета</string>
 
 </resources>

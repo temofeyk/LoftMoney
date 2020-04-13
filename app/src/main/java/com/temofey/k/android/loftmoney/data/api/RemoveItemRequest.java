@@ -7,10 +7,9 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
-public interface PostItemRequest {
-    @POST("./items/add")
+public interface RemoveItemRequest {
+    @POST("./items/remove")
     @FormUrlEncoded
-    Single<ItemOperationResponse> request(@Field("price") Integer price, @Field("name") String name,
-                                          @Field("type") String type,
+    Single<ItemOperationResponse> request(@Field("id") String id,
                                           @Field("auth-token") String token);
 }

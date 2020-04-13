@@ -1,9 +1,14 @@
 package com.temofey.k.android.loftmoney.activities.main;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -34,7 +39,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class BudgetFragment extends Fragment {
+public class BudgetFragment extends Fragment implements ItemsAdapterListener, ActionMode.Callback {
 
     private static final int REQUEST_CODE = 100;
     private static final String COLOR_ID = "colorId";
@@ -43,6 +48,8 @@ public class BudgetFragment extends Fragment {
     private ItemsAdapter adapter;
     private List<Disposable> disposables = new ArrayList<>();
     private SwipeRefreshLayout refreshLayout;
+    private ActionMode actionMode;
+    private FloatingActionButton fabAddItem;
 
     static BudgetFragment newInstance(final int colorId, final String type) {
         BudgetFragment budgetFragment = new BudgetFragment();
@@ -68,9 +75,9 @@ public class BudgetFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_budget, container);
+        View view = inflater.inflate(R.layout.fragment_budget, container, true);
 
-        FloatingActionButton fabAddItem = view.findViewById(R.id.fabBudgetAddItem);
+        fabAddItem = view.findViewById(R.id.fabBudgetAddItem);
         refreshLayout = view.findViewById(R.id.refreshBudget);
         refreshLayout.setOnRefreshListener(this::loadItems);
         fabAddItem.setOnClickListener(v -> {
@@ -87,6 +94,7 @@ public class BudgetFragment extends Fragment {
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation()));
 
         adapter = new ItemsAdapter(Objects.requireNonNull(getArguments()).getInt(COLOR_ID));
+        adapter.setItemsAdapterListener(this);
         recyclerView.setAdapter(adapter);
         loadItems();
         return view;
@@ -102,6 +110,11 @@ public class BudgetFragment extends Fragment {
             itemsList.add(item);
             adapter.setItemsList(itemsList);
         }
+    }
+
+    private void enableControls(Boolean enabled) {
+        refreshLayout.setEnabled(enabled);
+        fabAddItem.setVisibility(enabled ? View.VISIBLE : View.GONE);
     }
 
     private void loadItems() {
@@ -131,5 +144,94 @@ public class BudgetFragment extends Fragment {
                 });
 
         disposables.add(response);
+    }
+
+    private void removeItems() {
+        Activity activity = getActivity();
+
+        if (activity == null) {
+            return;
+        }
+        Prefs prefs = ((App) activity.getApplication()).getPrefs();
+
+        String token = prefs.getToken();
+        List<Item> selectedItems = adapter.getSelectedItems();
+
+        for (Item item : selectedItems) {
+
+            Disposable response = WebFactory.getInstance().getRemoveItemRequest()
+                    .request(item.getId(), token)
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(itemOperationResponse -> {
+                                if (itemOperationResponse.statusIsSuccess()) {
+                                    List<Item> itemsList = new ArrayList<>(adapter.getItemsList());
+                                    itemsList.remove(item);
+                                    adapter.setItemsList(itemsList);
+                                } else {
+                                    String status = itemOperationResponse.getStatus();
+                                    Toast.makeText(getContext(), status, Toast.LENGTH_SHORT).show();
+                                }
+
+                            }, throwable -> Toast.makeText(getContext(), throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show()
+
+                    );
+            disposables.add(response);
+        }
+    }
+
+    @Override
+    public void onItemClick(Item item, int position) {
+        adapter.clearItem(position);
+        if (actionMode != null) {
+            actionMode.setTitle(getString(R.string.selected, String.valueOf(adapter.getSelectedSize())));
+        }
+    }
+
+    @Override
+    public void onItemLongClick(Item item, int position) {
+        if (actionMode == null) {
+            Objects.requireNonNull(getActivity()).startActionMode(this);
+        }
+        adapter.toggleItem(position);
+        if (actionMode != null) {
+            actionMode.setTitle(getString(R.string.selected, String.valueOf(adapter.getSelectedSize())));
+        }
+    }
+
+    @Override
+    public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+        this.actionMode = actionMode;
+        enableControls(false);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+        MenuInflater menuInflater = new MenuInflater(getActivity());
+        menuInflater.inflate(R.menu.menu_delete, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+        if (menuItem.getItemId() == R.id.remove) {
+            new AlertDialog.Builder(getContext())
+                    .setMessage(R.string.confirmation)
+                    .setPositiveButton(android.R.string.yes, (dialogInterface, i) -> {
+                        removeItems();
+                        actionMode.finish();
+                    })
+                    .setNegativeButton(android.R.string.no, (dialogInterface, i) -> {
+                    }).show();
+        }
+        return true;
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode actionMode) {
+        this.actionMode = null;
+        enableControls(true);
+        adapter.clearSelections();
     }
 }
