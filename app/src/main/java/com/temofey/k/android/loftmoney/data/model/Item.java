@@ -1,17 +1,21 @@
 package com.temofey.k.android.loftmoney.data.model;
 
-import com.temofey.k.android.loftmoney.activities.main.ItemsAdapter;
 import com.temofey.k.android.loftmoney.data.api.model.ItemRemote;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Item implements Serializable {
 
     private String name;
     private int price;
     private String id;
+    private Boolean isOutcome;
+
+    public Item(ItemRemote itemRemote, Boolean isOutcome) {
+        this(itemRemote);
+        this.isOutcome = isOutcome;
+    }
 
     public Item(ItemRemote itemRemote) {
         this.id = itemRemote.getId();
@@ -49,6 +53,10 @@ public class Item implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Boolean isOutcome() {
+        return isOutcome;
     }
 
     @Override

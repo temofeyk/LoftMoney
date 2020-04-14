@@ -1,4 +1,4 @@
-package com.temofey.k.android.loftmoney.activities.main;
+package com.temofey.k.android.loftmoney.activities.main.budget;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -55,7 +55,7 @@ public class BudgetFragment extends Fragment implements ItemsAdapterListener, Ac
     private ActionMode actionMode;
     private FloatingActionButton fabAddItem;
 
-    static BudgetFragment newInstance(final int colorId, final String type) {
+    public static BudgetFragment newInstance(final int colorId, final String type) {
         BudgetFragment budgetFragment = new BudgetFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(COLOR_ID, colorId);
@@ -179,25 +179,8 @@ public class BudgetFragment extends Fragment implements ItemsAdapterListener, Ac
                     }
                 });
         disposables.add(response);
-    }
 
-    private static class ItemRemoveResult {
 
-        private Item item;
-        private ItemOperationResponse itemOperationResponse;
-
-        ItemRemoveResult(Item item, ItemOperationResponse itemOperationResponse) {
-            this.item = item;
-            this.itemOperationResponse = itemOperationResponse;
-        }
-
-        Item getItem() {
-            return item;
-        }
-
-        ItemOperationResponse getItemOperationResponse() {
-            return itemOperationResponse;
-        }
     }
 
     @Override
@@ -253,5 +236,24 @@ public class BudgetFragment extends Fragment implements ItemsAdapterListener, Ac
         this.actionMode = null;
         enableControls(true);
         adapter.clearSelections();
+    }
+
+    private static class ItemRemoveResult {
+
+        private Item item;
+        private ItemOperationResponse itemOperationResponse;
+
+        private ItemRemoveResult(Item item, ItemOperationResponse itemOperationResponse) {
+            this.item = item;
+            this.itemOperationResponse = itemOperationResponse;
+        }
+
+        private Item getItem() {
+            return item;
+        }
+
+        private ItemOperationResponse getItemOperationResponse() {
+            return itemOperationResponse;
+        }
     }
 }

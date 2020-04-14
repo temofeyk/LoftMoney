@@ -1,4 +1,4 @@
-package com.temofey.k.android.loftmoney.activities.main;
+package com.temofey.k.android.loftmoney.activities.main.budget;
 
 import android.util.SparseBooleanArray;
 import android.view.View;

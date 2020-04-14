@@ -7,6 +7,7 @@
     <!--    Main activity-->
     <string name="outcomes">Расходы</string>
     <string name="incomes">Доходы</string>
+    <string name="balance">Баланс</string>
     <!--    Budget fragment-->
     <string name="selected">Выделено: %1$s</string>
     <!--    menu-->
@@ -15,5 +16,7 @@
     <!--    Auth activity-->
     <string name="btAuthEnterText">войти</string>
     <string name="main_title">Учёт бюджета</string>
+    <!--    Balance fragment-->
+    <string name="available_finances">Доступные финансы</string>
 
 </resources>
