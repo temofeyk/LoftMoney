@@ -1,4 +1,4 @@
-package com.temofey.k.android.loftmoney.activities.main;
+package com.temofey.k.android.loftmoney.activities.main.budget;
 
 import androidx.recyclerview.widget.DiffUtil;
 
@@ -27,7 +27,7 @@ class ItemsDiffUtil extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldList.get(oldItemPosition).getId() == newList.get(newItemPosition).getId();
+        return oldList.get(oldItemPosition).getId().equals(newList.get(newItemPosition).getId());
     }
 
     @Override

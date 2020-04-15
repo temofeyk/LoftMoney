@@ -21,4 +21,6 @@
     <!--    action mode-->
     <color name="dark_grey_blue">#333f59</color>
 
+    <color name="pale_orange">#ff9e57</color>
+
 </resources>

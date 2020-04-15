@@ -15,6 +15,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.temofey.k.android.loftmoney.R;
+import com.temofey.k.android.loftmoney.activities.main.balance.BalanceFragment;
+import com.temofey.k.android.loftmoney.activities.main.budget.BudgetFragment;
 import com.temofey.k.android.loftmoney.data.api.GetItemsRequest;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         final static int PAGE_OUTCOMES = 0;
         final static int PAGE_INCOMES = 1;
 
-        private final static int NUM_PAGES = 2;
+        private final static int NUM_PAGES = 3;
 
         BudgetPagerStateAdapter(@NonNull FragmentActivity fragmentActivity) {
             super(fragmentActivity);
@@ -52,10 +54,16 @@ public class MainActivity extends AppCompatActivity {
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            if (position == PAGE_OUTCOMES) {
+
+            switch (position) {
+                case PAGE_OUTCOMES:
                 return BudgetFragment.newInstance(R.color.dark_sky_blue, GetItemsRequest.EXPENSE);
+                case PAGE_INCOMES:
+                    return BudgetFragment.newInstance(R.color.apple_green, GetItemsRequest.INCOME);
+                default:
+                    return BalanceFragment.newInstance();
             }
-            return BudgetFragment.newInstance(R.color.apple_green, GetItemsRequest.INCOME);
+
         }
 
         @Override

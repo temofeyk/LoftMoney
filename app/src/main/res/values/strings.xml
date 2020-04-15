@@ -11,6 +11,7 @@
     <!--    Main activity-->
     <string name="outcomes">Outcomes</string>
     <string name="incomes">Incomes</string>
+    <string name="balance">Balance</string>
 
     <!--    Budget fragment-->
     <string name="selected">Selected: %1$s</string>
@@ -23,9 +24,18 @@
     <string name="btAuthEnterText">enter</string>
     <string name="main_title">Budget accounting</string>
 
+    <!--    Balance fragment-->
+    <string name="available_finances">Available finances</string>
+    <!--    stub balance values-->
+    <string name="defaultAvailable" translatable="false">67000₽</string>
+    <string name="defaultOutcomes" translatable="false">5400₽</string>
+    <string name="defaultIncomes" translatable="false">74000₽</string>
+
+    <!--    main tabs titles-->
     <string-array name="main_tabs">
         <item>@string/outcomes</item>
         <item>@string/incomes</item>
+        <item>@string/balance</item>
     </string-array>
 
 </resources>
