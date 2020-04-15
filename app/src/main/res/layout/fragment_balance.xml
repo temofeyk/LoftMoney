@@ -113,6 +113,8 @@
         android:layout_marginTop="36dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:incomeFillColor="#FF43E843"
+        app:outcomeFillColor="#FFFFEB3B"
         app:layout_constraintTop_toBottomOf="@+id/balanceDivider3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
