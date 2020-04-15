@@ -17,6 +17,11 @@ import com.temofey.k.android.loftmoney.R;
 import com.temofey.k.android.loftmoney.data.api.WebFactory;
 import com.temofey.k.android.loftmoney.data.prefs.Prefs;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.disposables.Disposable;
+
 public class BalanceFragment extends Fragment implements BalanceViewState {
 
     private BalancePresenter balancePresenter;
@@ -24,6 +29,7 @@ public class BalanceFragment extends Fragment implements BalanceViewState {
     private AppCompatTextView incomeTextView;
     private AppCompatTextView outcomeTextView;
     private DiagramView diagramView;
+    private List<Disposable> disposables = new ArrayList<>();
 
     public static BalanceFragment newInstance() {
         return new BalanceFragment();
@@ -61,8 +67,19 @@ public class BalanceFragment extends Fragment implements BalanceViewState {
         Prefs prefs = ((App) activity.getApplication()).getPrefs();
         String token = prefs.getToken();
 
-        balancePresenter.fetchBalance(context, WebFactory.getInstance().getItemsRequest(), token);
+        disposables.add(balancePresenter.fetchBalance(context, WebFactory.getInstance().getItemsRequest(), token));
     }
+
+    @Override
+    public void onStop() {
+
+        for (Disposable disposable : disposables) {
+            disposable.dispose();
+        }
+        disposables.clear();
+        super.onStop();
+    }
+
 
     @Override
     public void setBalance(String balance) {

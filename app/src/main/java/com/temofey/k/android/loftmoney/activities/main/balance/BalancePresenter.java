@@ -25,11 +25,11 @@ class BalancePresenter {
     }
 
     @SuppressLint("CheckResult")
-    void fetchBalance(Context context, GetItemsRequest getItemsRequest, String authToken) {
+    Disposable fetchBalance(Context context, GetItemsRequest getItemsRequest, String authToken) {
         Single<List<ItemRemote>> outcomeRequest = getItemsRequest.request(GetItemsRequest.EXPENSE, authToken);
         Single<List<ItemRemote>> incomeRequest = getItemsRequest.request(GetItemsRequest.INCOME, authToken);
 
-        Disposable disposable = Single.zip(outcomeRequest, incomeRequest, (outcomes, incomes) -> {
+        return Single.zip(outcomeRequest, incomeRequest, (outcomes, incomes) -> {
             List<Item> totalFinances = new ArrayList<>(outcomes.size() + incomes.size());
 
             for (ItemRemote item : outcomes) {
