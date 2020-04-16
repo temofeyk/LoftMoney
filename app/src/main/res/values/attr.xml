@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DiagramView">
+        <attr name="incomeFillColor" format="color" />
+        <attr name="outcomeFillColor" format="color" />
+    </declare-styleable>
+</resources>

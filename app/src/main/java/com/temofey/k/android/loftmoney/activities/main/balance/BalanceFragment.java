@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.temofey.k.android.loftmoney.App;
 import com.temofey.k.android.loftmoney.R;
+import com.temofey.k.android.loftmoney.components.DiagramView;
 import com.temofey.k.android.loftmoney.data.api.WebFactory;
 import com.temofey.k.android.loftmoney.data.prefs.Prefs;
 

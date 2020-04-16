@@ -1,18 +1,20 @@
-package com.temofey.k.android.loftmoney.activities.main.balance;
+package com.temofey.k.android.loftmoney.components;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 
 import com.temofey.k.android.loftmoney.R;
 
 public class DiagramView extends View {
 
+    private final int DEFAULT_OUTCOMES_COLOR = 0xff4a90e2;
+    private final int DEFAULT_INCOMES_COLOR = 0xff7ed321;
     private float outcomes = 100;
     private float incomes = 300;
 
@@ -21,22 +23,26 @@ public class DiagramView extends View {
 
     public DiagramView(Context context) {
         super(context);
-        init();
+
+        // default colors
+        outcomePaint.setColor(DEFAULT_OUTCOMES_COLOR);
+        incomePaint.setColor(DEFAULT_INCOMES_COLOR);
+
     }
 
     public DiagramView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context, attrs, 0, 0);
     }
 
     public DiagramView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(context, attrs, defStyleAttr, 0);
     }
 
     public DiagramView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init();
+        init(context, attrs, defStyleRes, defStyleRes);
     }
 
     public void update(int outcomes, int incomes) {
@@ -46,9 +52,22 @@ public class DiagramView extends View {
         invalidate();
     }
 
-    private void init() {
-        outcomePaint.setColor(ContextCompat.getColor(getContext(), R.color.dark_sky_blue));
-        incomePaint.setColor(ContextCompat.getColor(getContext(), R.color.apple_green));
+    private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+
+        final TypedArray styledAttributes = context.obtainStyledAttributes(attrs,
+                R.styleable.DiagramView,
+                defStyleAttr,
+                defStyleRes);
+        try {
+            outcomePaint.setColor(styledAttributes.getColor(
+                    R.styleable.DiagramView_outcomeFillColor,
+                    DEFAULT_OUTCOMES_COLOR));
+            incomePaint.setColor(styledAttributes.getColor(
+                    R.styleable.DiagramView_incomeFillColor,
+                    DEFAULT_INCOMES_COLOR));
+        } finally {
+            styledAttributes.recycle();
+        }
     }
 
     @Override

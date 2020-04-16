@@ -106,13 +106,15 @@
         android:background="@color/white_six"
         app:layout_constraintTop_toBottomOf="@+id/txtBalanceOutcomes" />
 
-    <com.temofey.k.android.loftmoney.activities.main.balance.DiagramView
+    <com.temofey.k.android.loftmoney.components.DiagramView
         android:id="@+id/dvBalance"
         android:layout_width="176dp"
         android:layout_height="176dp"
         android:layout_marginTop="36dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:incomeFillColor="#FF43E843"
+        app:outcomeFillColor="#FFFFEB3B"
         app:layout_constraintTop_toBottomOf="@+id/balanceDivider3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
