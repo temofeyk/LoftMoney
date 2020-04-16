@@ -1,5 +1,7 @@
 package com.temofey.k.android.loftmoney.data.api;
 
+import com.temofey.k.android.loftmoney.BuildConfig;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -7,7 +9,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WebFactory {
-    private static final String BaseUrl = "https://loftschool.com/android-api/basic/v1/";
+    private static final String BaseUrl = BuildConfig.URL;
     private static WebFactory instance = null;
     private Retrofit retrofit;
 

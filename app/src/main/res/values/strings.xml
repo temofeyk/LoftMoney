@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">LoftMoney</string>
     <!--    Add item activity-->
     <string name="btnAddItemAddTitle">Add</string>
     <string name="etAddItemNameHint">Name</string>

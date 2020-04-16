@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+
+-keep class com.temofey.k.android.loftmoney.data.api.model.AuthResponse {*;}
+-keep class com.temofey.k.android.loftmoney.data.api.model.ItemOperationResponse {*;}
+-keep class com.temofey.k.android.loftmoney.data.api.model.ItemRemote {*;}
+-keep class com.temofey.k.android.loftmoney.data.api.model.OperationResponse {*;}
