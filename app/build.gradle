@@ -13,12 +13,16 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
     signingConfigs {
         release {
             storeFile file ("../release.jks")
-            storePassword '123456'
+            storePassword properties.getProperty("default.storePassword", "")
             keyAlias 'temofeyk'
-            keyPassword '123456'
+            keyPassword properties.getProperty("default.keyPassword", "")
         }
     }
     buildTypes {
