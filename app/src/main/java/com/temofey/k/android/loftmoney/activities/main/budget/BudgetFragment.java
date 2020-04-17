@@ -95,7 +95,9 @@ public class BudgetFragment extends Fragment implements ItemsAdapterListener, Ac
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation()));
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation());
+        dividerItemDecoration.setDrawable(Objects.requireNonNull(recyclerView.getContext().getDrawable(R.drawable.divider)));
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
         adapter = new ItemsAdapter(Objects.requireNonNull(getArguments()).getInt(COLOR_ID));
         adapter.setItemsAdapterListener(this);
