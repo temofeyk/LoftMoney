@@ -7,4 +7,6 @@
 /captures
 .externalNativeBuild
 /app/release/
+/app/mobile/
 /app/build/
+release.jks
